@@ -1,0 +1,42 @@
+@extends('layouts.admin')
+
+@section('content')
+    @include('partials._alerts')
+    <h2>Rentals</h2>
+    <a class="btn btn-outline-success mb-3" href="{{ route('admin.rentals.create') }}">Add Rental</a>
+    <table class="table-bordered table">
+        <thead>
+            <tr>
+                <th>Rental ID</th>
+                <th>Customer Name</th>
+                <th>Car Details (Name, Brand)</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Total Cost</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($rentals as $rental)
+                <tr>
+                    <td>{{ $rental->id }}</td>
+                    <td>{{ $rental->user->name }}</td>
+                    <td>{{ $rental->car->name }} ({{ $rental->car->brand }})</td>
+                    <td>{{ $rental->start_date }}</td>
+                    <td>{{ $rental->end_date }}</td>
+                    <td>{{ $rental->total_cost }}</td>
+                    <td>{{ $rental->status }}</td>
+                    <td>
+                        <a class="btn btn-outline-warning btn-sm" href="{{ route('admin.rentals.edit', $rental->id) }}">Edit</a>
+                        <form style="display:inline;" action="{{ route('admin.rentals.destroy', $rental->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-outline-danger btn-sm" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+@endsection
