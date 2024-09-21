@@ -1,11 +1,14 @@
 @extends('layouts.admin')
 
 @section('content')
-    <h1>Customer Rentals</h1>
-    <h2>{{ $customer->name }}</h2>
+    <h3>Customer Rentals</h3>
+
+    <hr>
+    <p>Name : {{ $customer->name }}</p>
     <p>Email: {{ $customer->email }}</p>
     <p>Phone: {{ $customer->phone }}</p>
     <p>Address: {{ $customer->address }}</p>
+    <hr>
 
     <h3>Rental History</h3>
     <table class="table-bordered table">
@@ -15,6 +18,7 @@
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Total Cost</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -24,6 +28,17 @@
                     <td>{{ $rental->start_date }}</td>
                     <td>{{ $rental->end_date }}</td>
                     <td>{{ $rental->total_cost }}</td>
+                    <td>
+                        @if ($rental->status == 'Pending')
+                            <span class="badge bg-primary">Pending</span>
+                        @elseif ($rental->status == 'Ongoing')
+                            <span class="badge bg-warning">Ongoing</span>
+                        @elseif ($rental->status == 'Completed')
+                            <span class="badge bg-success">Completed</span>
+                        @elseif ($rental->status == 'Canceled')
+                            <span class="badge bg-danger">Canceled</span>
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>
