@@ -13,9 +13,11 @@ class VerifyRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->user()->hasRole($role)) {
+        if ($request->user()->isAdmin()) {
+            return $next($request);
+        } else if ($request->user()->isCustomer()) {
             return redirect('/');
         }
         return $next($request);
