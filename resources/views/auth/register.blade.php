@@ -1,5 +1,6 @@
 @extends('layouts.auth')
 @section('content')
+    @include('partials._alerts')
     <div class="card">
         <div class="card-header">Register</div>
         <div class="card-body">
@@ -20,6 +21,20 @@
                     @enderror
                 </div>
                 <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input class="form-control" id="phone" name="phone" type="text" value="{{ old('phone') }}" required>
+                    @error('phone')
+                        <div class="alert alert-danger my-1">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input class="form-control" id="address" name="address" type="text" value="{{ old('address') }}" required>
+                    @error('address')
+                        <div class="alert alert-danger my-1">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group">
                     <label for="password">Password</label>
                     <input class="form-control" id="password" name="password" type="password" required>
                 </div>
@@ -30,7 +45,8 @@
                         <div class="alert alert-danger my-1">{{ $message }}</div>
                     @enderror
                 </div>
-                <button class="btn btn-primary" type="submit">Register</button>
+                <button class="btn btn-success mt-2" type="submit">Register</button>
+                <a class="btn btn-outline-primary mt-2" href="/login">Go to Login</a>
             </form>
         </div>
     </div>
