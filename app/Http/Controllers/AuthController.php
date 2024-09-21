@@ -30,9 +30,7 @@ class AuthController extends Controller
             return redirect()->intended('/');
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ]);
+        return back()->with('error', 'Invalid login details');
     }
 
     public function registerUser(Request $request)
@@ -41,6 +39,8 @@ class AuthController extends Controller
             'name' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users'],
             'password' => ['required', 'min:6', 'confirmed'],
+            'phone' => ['required'],
+            'address' => ['required', 'string'],
         ]);
 
         $user = User::create($data);
