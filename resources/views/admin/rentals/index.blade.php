@@ -3,7 +3,7 @@
 @section('content')
     @include('partials._alerts')
     <h2>Rentals</h2>
-    <a class="btn btn-outline-success mb-3" href="{{ route('admin.rentals.create') }}">Add Rental</a>
+    {{-- <a class="btn btn-outline-success mb-3" href="{{ route('admin.rentals.create') }}">Add Rental</a> --}}
     <table class="table-bordered table">
         <thead>
             <tr>
@@ -39,4 +39,34 @@
             @endforeach
         </tbody>
     </table>
+    {{ $rentals->links() }}
+
+    <hr>
+
+    <div class="mt-4">
+        <table class="table-bordered table">
+            <thead>
+                <tr>
+                    <th>Brand</th>
+                    <th>Car Type</th>
+                    <th>Daily Rent Price</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($cars as $car)
+                    <tr>
+                        <td>{{ $car->brand }}</td>
+                        <td>{{ $car->car_type }}</td>
+                        <td>${{ $car->daily_rent_price }}</td>
+                        <td><img class="img-thumbnail" src="{{ asset($car->image) }}" alt="{{ $car->brand }} - {{ $car->car_type }}" style="height:50px;"></td>
+                        <td>
+                            <a class="btn btn-outline-success" href="{{ route('admin.rentals.create', ['id' => $car->id]) }}">Make New Rental</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 @endsection

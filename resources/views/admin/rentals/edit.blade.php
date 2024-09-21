@@ -21,9 +21,7 @@
             <div class="form-group">
                 <label for="car_id">Car</label>
                 <select class="form-control" id="car_id" name="car_id" required>
-                    @foreach ($cars as $car)
-                        <option value="{{ $car->id }}" {{ $rental->car_id == $car->id ? 'selected' : '' }}> ({{ $car->brand }}) : {{ $car->name }}</option>
-                    @endforeach
+                    <option value="{{ $car->id }}" selected> ({{ $car->brand }}) : {{ $car->name }}</option>
                 </select>
                 @error('car_id')
                     <span class="text-danger">{{ $message }}</span>
@@ -31,14 +29,14 @@
             </div>
             <div class="form-group">
                 <label for="start_date">Start Date</label>
-                <input class="form-control" id="start_date" name="start_date" type="date" value="{{ $rental->start_date }}" required>
+                <input class="form-control" id="start_date" name="start_date" type="text" value="{{ $rental->start_date }}" required>
                 @error('start_date')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             <div class="form-group">
                 <label for="end_date">End Date</label>
-                <input class="form-control" id="end_date" name="end_date" type="date" value="{{ $rental->end_date }}" required>
+                <input class="form-control" id="end_date" name="end_date" type="text" value="{{ $rental->end_date }}" required>
                 @error('end_date')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -53,9 +51,10 @@
             <div class="form-group">
                 <label for="status">Status</label>
                 <select class="form-control" id="status" name="status" required>
-                    <option value="ongoing" {{ $rental->status == 'ongoing' ? 'selected' : '' }}>Ongoing</option>
-                    <option value="completed" {{ $rental->status == 'completed' ? 'selected' : '' }}>Completed</option>
-                    <option value="canceled" {{ $rental->status == 'canceled' ? 'selected' : '' }}>Canceled</option>
+                    <option value="Pending" {{ $rental->status == 'Pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="Ongoing" {{ $rental->status == 'Ongoing' ? 'selected' : '' }}>Ongoing</option>
+                    <option value="Completed" {{ $rental->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                    <option value="Canceled" {{ $rental->status == 'Canceled' ? 'selected' : '' }}>Canceled</option>
                 </select>
                 @error('status')
                     <span class="text-danger">{{ $message }}</span>
@@ -64,4 +63,34 @@
         </div>
         <button class="btn btn-outline-success mt-2" type="submit">Update Rental</button>
     </form>
+@endsection
+
+@section('scripts')
+    <script>
+        $(function() {
+            var unavailableDates = @json($unavailableDates);
+
+            function disableDates(date) {
+                var today = new Date();
+                today.setHours(0, 0, 0, 0);
+                var string = jQuery.datepicker.formatDate('yy-mm-dd', date);
+
+                if (date < today || unavailableDates.indexOf(string) != -1) {
+                    return [false];
+                } else {
+                    return [true];
+                }
+            }
+
+            $("#start_date, #end_date").datepicker({
+                dateFormat: 'yy-mm-dd',
+                beforeShowDay: disableDates
+            });
+
+            $('#front_rental_form').on('submit', function() {
+                $('#submitBtn').prop('disabled', true);
+                $('#submitBtn').html('Processing...');
+            });
+        });
+    </script>
 @endsection
