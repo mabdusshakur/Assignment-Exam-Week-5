@@ -1,8 +1,6 @@
-Customer :
-
 # User Credentials
 
-## General
+## Customer
 
 -   **Name**: Nobita
 -   **Email**: xylequby@polkaroad.net
